@@ -1,733 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Target Rush</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>GALAXY DEFENDER - Offline Arcade</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            margin: 0;
+            padding: 0;
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
+        body {
+            background-color: #0b0c10;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
-body{
-    font-family:Arial,sans-serif;
-    background:#05070d;
-    color:white;
-    overflow:hidden;
-    touch-action:manipulation;
-}
+        #game-container {
+            position: relative;
+            box-shadow: 0 0 25px rgba(102, 252, 241, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
 
-.screen{
-    min-height:100vh;
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    text-align:center;
-    padding:20px;
-    background:
-        radial-gradient(circle at center,#28304f 0%,#080a12 65%,#030407 100%);
-}
+        canvas {
+            background: radial-gradient(circle, #1f2833 0%, #0b0c10 100%);
+            display: block;
+        }
 
-h1{
-    font-size:52px;
-    letter-spacing:2px;
-    color:#ffcc00;
-    text-shadow:0 0 25px #ffb300;
-}
+        .ui-overlay {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            right: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            color: #66fcf1;
+            text-shadow: 0 0 8px rgba(102, 252, 241, 0.6);
+            pointer-events: none;
+        }
 
-.subtitle{
-    margin-top:8px;
-    color:#b9bfcd;
-    letter-spacing:2px;
-}
+        /* Mobile Controls */
+        .mobile-controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 20px;
+            box-sizing: border-box;
+        }
 
-.start-btn,
-.restart-btn,
-.home-btn{
-    margin-top:30px;
-    padding:15px 35px;
-    border:none;
-    border-radius:12px;
-    background:#ffcc00;
-    color:#111;
-    font-size:17px;
-    font-weight:bold;
-    cursor:pointer;
-}
+        .d-pad {
+            display: flex;
+            gap: 15px;
+        }
 
-#game{
-    display:none;
-    position:relative;
-    min-height:100vh;
-    width:100%;
-    padding:0;
-}
+        .btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 2px solid #45a29e;
+            background: rgba(31, 40, 51, 0.8);
+            color: #66fcf1;
+            font-size: 22px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
 
-.hud{
-    position:absolute;
-    top:15px;
-    left:12px;
-    right:12px;
-    z-index:10;
+        .btn:active {
+            background: #66fcf1;
+            color: #0b0c10;
+        }
 
-    display:flex;
-    justify-content:space-between;
-    gap:8px;
-}
+        .btn-fire {
+            background: rgba(255, 0, 85, 0.3);
+            border-color: #ff0055;
+            color: #ff0055;
+            width: 75px;
+            height: 75px;
+        }
 
-.hud-box{
-    background:#0009;
-    border:1px solid #ffffff22;
-    border-radius:10px;
-    padding:9px 12px;
-    font-size:14px;
-}
-
-#arena{
-    position:absolute;
-    top:75px;
-    left:0;
-    right:0;
-    bottom:0;
-    overflow:hidden;
-}
-
-.target{
-    position:absolute;
-    width:76px;
-    height:76px;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(circle,
-        #fff 0 10%,
-        #ff3434 11% 27%,
-        #fff 28% 43%,
-        #ff3434 44% 61%,
-        #fff 62% 100%
-        );
-
-    border:3px solid white;
-
-    box-shadow:
-        0 0 12px #ff3333,
-        0 0 30px #ff2222;
-
-    cursor:pointer;
-
-    transform:translate(-50%,-50%);
-
-    animation:targetIn .15s ease-out;
-}
-
-@keyframes targetIn{
-    from{
-        transform:translate(-50%,-50%) scale(.4);
-        opacity:.3;
-    }
-    to{
-        transform:translate(-50%,-50%) scale(1);
-        opacity:1;
-    }
-}
-
-.target.hit{
-    animation:hit .18s ease-out;
-}
-
-@keyframes hit{
-    to{
-        transform:translate(-50%,-50%) scale(1.6);
-        opacity:0;
-    }
-}
-
-.miss{
-    position:absolute;
-    width:34px;
-    height:34px;
-    border:2px solid #ff3344;
-    border-radius:50%;
-    transform:translate(-50%,-50%);
-    animation:miss .3s ease-out forwards;
-}
-
-@keyframes miss{
-    to{
-        width:100px;
-        height:100px;
-        opacity:0;
-    }
-}
-
-#message{
-    position:absolute;
-    bottom:25px;
-    left:0;
-    right:0;
-    text-align:center;
-    font-weight:bold;
-    pointer-events:none;
-}
-
-.good{
-    color:#2cff9a;
-}
-
-.bad{
-    color:#ff4455;
-}
-
-#gameover{
-    display:none;
-}
-
-.final-score{
-    margin-top:20px;
-    font-size:25px;
-}
-
-.best-score{
-    margin-top:8px;
-    color:#ffcc00;
-    font-size:18px;
-}
-
-.info{
-    margin-top:18px;
-    color:#aeb5c5;
-}
-</style>
+        .btn-fire:active {
+            background: #ff0055;
+            color: #fff;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- HOME -->
-
-<section id="home" class="screen">
-
-    <h1>Target Rush</h1>
-
-    <div class="subtitle">
-        AIM FAST • TAP FASTER
+<div id="game-container">
+    <div class="ui-overlay">
+        <div>SCORE: <span id="score">0</span></div>
+        <div>HP: <span id="hp">❤❤❤</span></div>
     </div>
+    <canvas id="gameCanvas" width="380" height="520"></canvas>
+</div>
 
-    <button class="start-btn" onclick="startGame()">
-        PLAY 🎯
-    </button>
-
-</section>
-
-
-<!-- GAME -->
-
-<section id="game">
-
-    <div class="hud">
-
-        <div class="hud-box">
-            Score: <b id="score">0</b>
-        </div>
-
-        <div class="hud-box">
-            Level: <b id="level">1</b>
-        </div>
-
-        <div class="hud-box">
-            ❤️ <b id="lives">3</b>
-        </div>
-
-        <div class="hud-box">
-            ⏱️ <b id="time">3.0</b>
-        </div>
-
+<!-- On-Screen Controls for Mobile -->
+<div class="mobile-controls">
+    <div class="d-pad">
+        <button class="btn" id="btn-left">◀</button>
+        <button class="btn" id="btn-right">▶</button>
     </div>
-
-    <div id="arena"></div>
-
-    <div id="message"></div>
-
-</section>
-
-
-<!-- GAME OVER -->
-
-<section id="gameover" class="screen">
-
-    <h1>GAME OVER</h1>
-
-    <div class="final-score">
-        Score: <b id="finalScore">0</b>
-    </div>
-
-    <div class="best-score">
-        Best Score: <b id="bestScore">0</b>
-    </div>
-
-    <div class="info">
-        Can you beat your record?
-    </div>
-
-    <button class="restart-btn" onclick="startGame()">
-        PLAY AGAIN
-    </button>
-
-    <button class="home-btn" onclick="goHome()">
-        HOME
-    </button>
-
-</section>
-
+    <button class="btn btn-fire" id="btn-shoot">⚡</button>
+</div>
 
 <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreElement = document.getElementById('score');
+    const hpElement = document.getElementById('hp');
 
-let score = 0;
-let level = 1;
-let lives = 3;
-let time = 3;
+    let score = 0;
+    let lives = 3;
+    let gameOver = false;
 
-let timer = null;
-let targetTimer = null;
+    // Player Object
+    const player = {
+        x: canvas.width / 2 - 15,
+        y: canvas.height - 60,
+        width: 32,
+        height: 32,
+        speed: 5,
+        dx: 0
+    };
 
-let targetElement = null;
+    let bullets = [];
+    let enemies = [];
+    let stars = [];
 
-let best =
-Number(localStorage.getItem("targetRushBest")) || 0;
-
-
-const home =
-document.getElementById("home");
-
-const game =
-document.getElementById("game");
-
-const gameover =
-document.getElementById("gameover");
-
-const arena =
-document.getElementById("arena");
-
-const message =
-document.getElementById("message");
-
-
-function showScreen(screen){
-
-    home.style.display = "none";
-    game.style.display = "none";
-    gameover.style.display = "none";
-
-    screen.style.display = "flex";
-
-}
-
-
-function startGame(){
-
-    clearInterval(timer);
-    clearTimeout(targetTimer);
-
-    score = 0;
-    level = 1;
-    lives = 3;
-
-    updateHUD();
-
-    showScreen(game);
-
-    message.textContent = "";
-
-    createTarget();
-
-}
-
-
-function updateHUD(){
-
-    document.getElementById("score").textContent =
-        score;
-
-    document.getElementById("level").textContent =
-        level;
-
-    document.getElementById("lives").textContent =
-        lives;
-
-}
-
-
-function createTarget(){
-
-    clearInterval(timer);
-    clearTimeout(targetTimer);
-
-    if(targetElement){
-        targetElement.remove();
-        targetElement = null;
+    // Background Stars
+    for (let i = 0; i < 40; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2 + 1,
+            speed: Math.random() * 2 + 0.5
+        });
     }
 
-    /*
-        Target gets smaller
-        as level increases.
-    */
+    // Keyboard Controls
+    const keys = {};
+    window.addEventListener('keydown', (e) => {
+        keys[e.code] = true;
+        if (e.code === 'Space' && !gameOver) shootBullet();
+        if (e.code === 'KeyR' && gameOver) resetGame();
+    });
+    window.addEventListener('keyup', (e) => { keys[e.code] = false; });
 
-    const size =
-        Math.max(
-            38,
-            76 - level * 2
-        );
+    // Mobile Touch Controls
+    const btnLeft = document.getElementById('btn-left');
+    const btnRight = document.getElementById('btn-right');
+    const btnShoot = document.getElementById('btn-shoot');
 
+    btnLeft.addEventListener('touchstart', (e) => { e.preventDefault(); player.dx = -player.speed; });
+    btnLeft.addEventListener('touchend', () => { player.dx = 0; });
+    btnRight.addEventListener('touchstart', (e) => { e.preventDefault(); player.dx = player.speed; });
+    btnRight.addEventListener('touchend', () => { player.dx = 0; });
+    btnShoot.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (gameOver) resetGame();
+        else shootBullet();
+    });
 
-    targetElement =
-    document.createElement("div");
+    // Mouse fallback for buttons
+    btnLeft.addEventListener('mousedown', () => { player.dx = -player.speed; });
+    btnLeft.addEventListener('mouseup', () => { player.dx = 0; });
+    btnRight.addEventListener('mousedown', () => { player.dx = player.speed; });
+    btnRight.addEventListener('mouseup', () => { player.dx = 0; });
+    btnShoot.addEventListener('click', () => {
+        if (gameOver) resetGame();
+        else shootBullet();
+    });
 
-    targetElement.className = "target";
+    function shootBullet() {
+        bullets.push({
+            x: player.x + player.width / 2 - 2,
+            y: player.y,
+            width: 4,
+            height: 10,
+            speed: 7
+        });
+    }
 
-    targetElement.style.width =
-        size + "px";
+    function spawnEnemy() {
+        if (gameOver) return;
+        const size = Math.random() * 20 + 20;
+        enemies.push({
+            x: Math.random() * (canvas.width - size),
+            y: -size,
+            width: size,
+            height: size,
+            speed: Math.random() * 2 + 1.5,
+            color: ['#ff0055', '#ff9900', '#c800ff'][Math.floor(Math.random() * 3)]
+        });
+    }
 
-    targetElement.style.height =
-        size + "px";
+    setInterval(spawnEnemy, 900);
 
+    function update() {
+        if (gameOver) return;
 
-    /*
-        Keep target away from
-        the HUD area.
-    */
+        // Move Player Keyboard
+        if (keys['ArrowLeft'] || keys['KeyA']) player.x -= player.speed;
+        if (keys['ArrowRight'] || keys['KeyD']) player.x += player.speed;
+        
+        // Touch Move
+        player.x += player.dx;
 
-    const arenaWidth =
-        arena.clientWidth;
+        // Keep inside bounds
+        if (player.x < 0) player.x = 0;
+        if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
 
-    const arenaHeight =
-        arena.clientHeight;
+        // Move Stars
+        stars.forEach(star => {
+            star.y += star.speed;
+            if (star.y > canvas.height) star.y = 0;
+        });
 
+        // Bullets Logic
+        bullets.forEach((bullet, bIndex) => {
+            bullet.y -= bullet.speed;
+            if (bullet.y < 0) bullets.splice(bIndex, 1);
+        });
 
-    const margin =
-        size / 2 + 10;
+        // Enemy Logic & Collision
+        enemies.forEach((enemy, eIndex) => {
+            enemy.y += enemy.speed;
 
+            // Check hit bottom
+            if (enemy.y > canvas.height) {
+                enemies.splice(eIndex, 1);
+                lives--;
+                updateHP();
+            }
 
-    const x =
-        margin +
-        Math.random() *
-        Math.max(
-            1,
-            arenaWidth - margin * 2
-        );
+            // Bullet hits Enemy
+            bullets.forEach((bullet, bIndex) => {
+                if (
+                    bullet.x < enemy.x + enemy.width &&
+                    bullet.x + bullet.width > enemy.x &&
+                    bullet.y < enemy.y + enemy.height &&
+                    bullet.y + bullet.height > enemy.y
+                ) {
+                    enemies.splice(eIndex, 1);
+                    bullets.splice(bIndex, 1);
+                    score += 10;
+                    scoreElement.innerText = score;
+                }
+            });
 
+            // Player hits Enemy
+            if (
+                player.x < enemy.x + enemy.width &&
+                player.x + player.width > enemy.x &&
+                player.y < enemy.y + enemy.height &&
+                player.y + player.height > enemy.y
+            ) {
+                enemies.splice(eIndex, 1);
+                lives--;
+                updateHP();
+            }
+        });
+    }
 
-    const y =
-        margin +
-        Math.random() *
-        Math.max(
-            1,
-            arenaHeight - margin * 2
-        );
+    function updateHP() {
+        let hpString = '';
+        for (let i = 0; i < lives; i++) hpString += '❤';
+        hpElement.innerText = hpString || 'DEAD';
 
-
-    targetElement.style.left =
-        x + "px";
-
-    targetElement.style.top =
-        y + "px";
-
-
-    targetElement.addEventListener(
-        "pointerdown",
-        hitTarget
-    );
-
-
-    arena.appendChild(
-        targetElement
-    );
-
-
-    /*
-        Higher level =
-        less time.
-    */
-
-    time =
-        Math.max(
-            0.65,
-            3 - level * 0.09
-        );
-
-
-    document.getElementById(
-        "time"
-    ).textContent =
-        time.toFixed(1);
-
-
-    timer =
-    setInterval(()=>{
-
-        time -= 0.1;
-
-        document.getElementById(
-            "time"
-        ).textContent =
-            Math.max(
-                0,
-                time
-            ).toFixed(1);
-
-
-        if(time <= 0){
-
-            clearInterval(timer);
-
-            missedTarget();
-
+        if (lives <= 0) {
+            gameOver = true;
         }
-
-    },100);
-
-}
-
-
-function hitTarget(event){
-
-    event.stopPropagation();
-
-    clearInterval(timer);
-
-    if(!targetElement) return;
-
-
-    targetElement.classList.add("hit");
-
-
-    score += 10 * level;
-
-
-    /*
-        Every 5 successful hits
-        increases the level.
-    */
-
-    if(score > 0 &&
-       score % 50 === 0){
-
-        level++;
-
-        showMessage(
-            "LEVEL UP! 🔥",
-            true
-        );
-
-    }else{
-
-        showMessage(
-            "+ " + (10 * level),
-            true
-        );
-
     }
 
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    updateHUD();
+        // Draw Stars
+        ctx.fillStyle = '#ffffff';
+        stars.forEach(star => {
+            ctx.fillRect(star.x, star.y, star.size, star.size);
+        });
 
+        if (!gameOver) {
+            // Draw Player Spaceship
+            ctx.fillStyle = '#66fcf1';
+            ctx.beginPath();
+            ctx.moveTo(player.x + player.width / 2, player.y);
+            ctx.lineTo(player.x, player.y + player.height);
+            ctx.lineTo(player.x + player.width, player.y + player.height);
+            ctx.closePath();
+            ctx.fill();
 
-    setTimeout(()=>{
+            // Cockpit Glow
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(player.x + player.width / 2 - 2, player.y + 10, 4, 8);
 
-        if(targetElement){
-            targetElement.remove();
-            targetElement = null;
+            // Draw Bullets
+            ctx.fillStyle = '#ffe600';
+            bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
+
+            // Draw Enemies
+            enemies.forEach(e => {
+                ctx.fillStyle = e.color;
+                ctx.fillRect(e.x, e.y, e.width, e.height);
+            });
+        } else {
+            // Game Over Screen
+            ctx.fillStyle = '#ff0055';
+            ctx.font = '28px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 20);
+
+            ctx.fillStyle = '#fff';
+            ctx.font = '16px Arial';
+            ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2 + 15);
+            ctx.fillText('Press "R" or Tap ⚡ to Restart', canvas.width / 2, canvas.height / 2 + 45);
         }
-
-        createTarget();
-
-    },150);
-
-}
-
-
-function missedTarget(){
-
-    lives--;
-
-    updateHUD();
-
-    showMessage(
-        "MISS! ❤️ -1",
-        false
-    );
-
-
-    if(lives <= 0){
-
-        setTimeout(
-            endGame,
-            300
-        );
-
-    }else{
-
-        createTarget();
-
     }
 
-}
-
-
-function wrongTap(x,y){
-
-    lives--;
-
-    updateHUD();
-
-    showMessage(
-        "WRONG! ❤️ -1",
-        false
-    );
-
-
-    const miss =
-    document.createElement("div");
-
-    miss.className="miss";
-
-    miss.style.left =
-        x + "px";
-
-    miss.style.top =
-        y + "px";
-
-    arena.appendChild(miss);
-
-
-    setTimeout(()=>{
-        miss.remove();
-    },350);
-
-
-    if(lives <= 0){
-
-        setTimeout(
-            endGame,
-            300
-        );
-
+    function resetGame() {
+        score = 0;
+        lives = 3;
+        bullets = [];
+        enemies = [];
+        player.x = canvas.width / 2 - 15;
+        scoreElement.innerText = score;
+        updateHP();
+        gameOver = false;
     }
 
-}
-
-
-arena.addEventListener(
-    "pointerdown",
-    function(event){
-
-        /*
-            If target itself was clicked,
-            hitTarget handles it.
-        */
-
-        if(
-            event.target.classList.contains(
-                "target"
-            )
-        ){
-            return;
-        }
-
-
-        const rect =
-        arena.getBoundingClientRect();
-
-
-        const x =
-        event.clientX - rect.left;
-
-        const y =
-        event.clientY - rect.top;
-
-
-        wrongTap(x,y);
-
-    }
-);
-
-
-function showMessage(text,good){
-
-    message.textContent = text;
-
-    message.className =
-        good ? "good" : "bad";
-
-
-    setTimeout(()=>{
-
-        message.textContent="";
-        message.className="";
-
-    },500);
-
-}
-
-
-function endGame(){
-
-    clearInterval(timer);
-    clearTimeout(targetTimer);
-
-    if(targetElement){
-        targetElement.remove();
-        targetElement=null;
+    function gameLoop() {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
     }
 
-
-    if(score > best){
-
-        best = score;
-
-        localStorage.setItem(
-            "targetRushBest",
-            best
-        );
-
-    }
-
-
-    document.getElementById(
-        "finalScore"
-    ).textContent = score;
-
-
-    document.getElementById(
-        "bestScore"
-    ).textContent = best;
-
-
-    showScreen(gameover);
-
-}
-
-
-function goHome(){
-
-    clearInterval(timer);
-    clearTimeout(targetTimer);
-
-    if(targetElement){
-        targetElement.remove();
-        targetElement=null;
-    }
-
-    showScreen(home);
-
-}
-
+    gameLoop();
 </script>
-
 </body>
 </html>
