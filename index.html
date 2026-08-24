@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 <meta name="theme-color" content="#05070d">
-<title>ENDLESS SHIFT</title>
+<title>ENDLESS SHIFT - Arcade Games</title>
 
 <style>
 *{
@@ -12,15 +12,16 @@
     padding:0;
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
+    user-select:none;
 }
 
 html,body{
     width:100%;
     height:100%;
     overflow:hidden;
-    font-family:Arial,sans-serif;
     background:#05070d;
     color:#fff;
+    font-family:Arial,sans-serif;
 }
 
 button{
@@ -43,86 +44,334 @@ button{
 
 #home{
     align-items:center;
-    justify-content:center;
+    justify-content:flex-start;
     flex-direction:column;
+    overflow-y:auto;
     text-align:center;
     background:
-      radial-gradient(circle at 50% 35%,#183452 0%,#090d17 45%,#030407 100%);
+    radial-gradient(circle at 50% 10%,#183b58 0%,#090d17 42%,#030407 100%);
 }
 
-.home-glow{
-    position:absolute;
-    width:300px;
-    height:300px;
-    border-radius:50%;
-    background:#00eaff20;
-    filter:blur(60px);
-}
-
-.logo{
+.topbar{
+    width:100%;
+    height:64px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 18px;
     position:relative;
-    font-size:clamp(42px,12vw,75px);
+    z-index:10;
+    border-bottom:1px solid #ffffff12;
+    background:#05070dcc;
+    backdrop-filter:blur(10px);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.brand-logo{
+    width:38px;
+    height:38px;
+    border-radius:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#00eaff,#0066ff);
+    color:#001016;
+    font-size:20px;
+    font-weight:1000;
+    box-shadow:0 0 20px #00eaff70;
+}
+
+.brand-name{
+    text-align:left;
+    font-size:18px;
+    font-weight:1000;
+    letter-spacing:2px;
+}
+
+.brand-sub{
+    color:#7f8a9d;
+    font-size:9px;
+    letter-spacing:2px;
+}
+
+.settings-top{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    border:1px solid #ffffff20;
+    background:#ffffff0d;
+    color:#fff;
+    font-size:20px;
+}
+
+.hero{
+    padding:40px 20px 20px;
+}
+
+.main-logo{
+    font-size:clamp(43px,12vw,76px);
     line-height:.9;
     font-weight:1000;
     letter-spacing:5px;
     color:#00eaff;
     text-shadow:
-        0 0 10px #00eaff,
-        0 0 35px #00eaff,
-        0 0 70px #008cff;
+    0 0 10px #00eaff,
+    0 0 35px #00eaff,
+    0 0 70px #008cff;
 }
 
-.logo-small{
-    color:#fff;
+.main-logo span{
+    color:white;
 }
 
 .tagline{
-    position:relative;
-    margin-top:18px;
-    font-size:12px;
-    letter-spacing:4px;
+    margin-top:16px;
     color:#9da8b8;
+    font-size:11px;
+    letter-spacing:3px;
 }
 
-.menu{
-    position:relative;
-    width:min(280px,80%);
-    margin-top:45px;
+/* GAME CARDS */
+
+.games-title{
+    margin-top:22px;
+    margin-bottom:14px;
+    color:#fff;
+    font-size:14px;
+    letter-spacing:3px;
+}
+
+.games{
+    width:min(420px,92%);
     display:flex;
     flex-direction:column;
-    gap:14px;
+    gap:12px;
+    padding-bottom:30px;
 }
 
-.btn{
-    border:0;
-    border-radius:14px;
+.game-card{
+    position:relative;
+    width:100%;
+    min-height:94px;
     padding:16px;
-    font-size:17px;
-    font-weight:800;
+    border-radius:18px;
+    border:1px solid #ffffff1c;
+    background:linear-gradient(135deg,#ffffff10,#ffffff04);
+    display:flex;
+    align-items:center;
+    text-align:left;
+    overflow:hidden;
     transition:.15s;
 }
 
-.btn:active{
-    transform:scale(.96);
+.game-card:active{
+    transform:scale(.97);
 }
 
-.play-btn{
-    color:#001016;
+.game-icon{
+    width:62px;
+    height:62px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    margin-right:15px;
+    flex-shrink:0;
+}
+
+.shift-icon{
+    background:#00eaff20;
+    border:1px solid #00eaff50;
+}
+
+.galaxy-icon{
+    background:#a000ff20;
+    border:1px solid #a000ff50;
+}
+
+.target-icon{
+    background:#ffcc0020;
+    border:1px solid #ffcc0050;
+}
+
+.game-info{
+    flex:1;
+}
+
+.game-name{
+    font-size:18px;
+    font-weight:1000;
+}
+
+.game-desc{
+    margin-top:5px;
+    color:#929caf;
+    font-size:11px;
+}
+
+.game-arrow{
+    font-size:23px;
+    color:#00eaff;
+}
+
+.best-home{
+    color:#ffd000;
+    font-size:12px;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+/* ================= GENERAL BUTTON ================= */
+
+.btn{
+    border:0;
+    border-radius:13px;
+    padding:14px 22px;
+    font-size:16px;
+    font-weight:800;
+}
+
+.primary{
     background:#00eaff;
-    box-shadow:0 0 25px #00eaff80;
+    color:#001016;
+    box-shadow:0 0 20px #00eaff50;
 }
 
-.secondary-btn{
+.secondary{
     color:#fff;
     background:#ffffff0d;
-    border:1px solid #ffffff25;
+    border:1px solid #ffffff20;
 }
 
-.best{
-    position:relative;
-    margin-top:25px;
-    color:#ffd000;
+.back{
+    margin-top:22px;
+    background:#00eaff;
+    color:#001016;
+}
+
+/* ================= SETTINGS / INFO ================= */
+
+#settings,
+#privacy,
+#terms,
+#contact,
+#about{
+    align-items:center;
+    justify-content:flex-start;
+    flex-direction:column;
+    padding:20px;
+    overflow-y:auto;
+    background:
+    radial-gradient(circle at 50% 15%,#172d46,#05070d 65%);
+}
+
+.page-box{
+    width:min(460px,100%);
+    padding-bottom:40px;
+}
+
+.page-title{
+    font-size:32px;
+    color:#00eaff;
+    margin:35px 0 25px;
+    font-weight:1000;
+}
+
+.setting-item{
+    width:100%;
+    padding:17px;
+    margin-bottom:10px;
+    border-radius:14px;
+    background:#ffffff0b;
+    border:1px solid #ffffff15;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.setting-left{
+    text-align:left;
+}
+
+.setting-name{
     font-weight:bold;
+}
+
+.setting-desc{
+    margin-top:4px;
+    color:#858fa1;
+    font-size:11px;
+}
+
+.toggle{
+    width:54px;
+    height:30px;
+    border-radius:20px;
+    background:#333;
+    border:0;
+    position:relative;
+}
+
+.toggle::after{
+    content:"";
+    position:absolute;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    top:4px;
+    left:4px;
+    background:#aaa;
+    transition:.2s;
+}
+
+.toggle.on{
+    background:#00aebe;
+}
+
+.toggle.on::after{
+    left:28px;
+    background:white;
+}
+
+.link-item{
+    width:100%;
+    padding:17px;
+    margin-bottom:10px;
+    border-radius:14px;
+    background:#ffffff0b;
+    border:1px solid #ffffff15;
+    color:#fff;
+    text-align:left;
+    font-size:15px;
+    font-weight:bold;
+}
+
+.text-page{
+    color:#c4cad5;
+    font-size:14px;
+    line-height:1.7;
+    text-align:left;
+}
+
+.text-page h3{
+    color:#00eaff;
+    margin:20px 0 8px;
+}
+
+.text-page p{
+    margin-bottom:12px;
+}
+
+.email{
+    color:#00eaff;
+    font-weight:bold;
+    word-break:break-all;
 }
 
 /* ================= HOW TO ================= */
@@ -134,124 +383,95 @@ button{
     text-align:center;
     padding:25px;
     background:
-      radial-gradient(circle,#142b46,#05070d 70%);
-}
-
-.how-title{
-    font-size:36px;
-    color:#00eaff;
-    margin-bottom:28px;
+    radial-gradient(circle,#142b46,#05070d 70%);
 }
 
 .rules{
-    width:min(400px,90%);
-    line-height:2;
+    width:min(430px,92%);
+    line-height:1.8;
     color:#d8dde6;
-    font-size:15px;
+    font-size:14px;
 }
 
 .rule{
-    padding:7px 0;
+    padding:9px;
+    margin-bottom:5px;
+    border-radius:12px;
+    background:#ffffff08;
 }
 
 .rule b{
     color:#fff;
 }
 
-.back-btn{
-    margin-top:28px;
-    padding:13px 30px;
-    border:0;
+/* ================= GAME COMMON ================= */
+
+.game-screen{
+    background:#05070d;
+}
+
+.game-home{
+    position:absolute;
+    top:15px;
+    left:15px;
+    z-index:100;
+    width:42px;
+    height:40px;
     border-radius:10px;
-    background:#00eaff;
-    font-weight:bold;
+    border:1px solid #ffffff25;
+    background:#0008;
+    color:white;
+    font-size:17px;
 }
 
-/* ================= GAME ================= */
+/* ================= ENDLESS SHIFT ================= */
 
-#game{
+#shiftGame{
     background:
-      radial-gradient(circle at 50% 25%,#18243b 0%,#070a11 55%,#020307 100%);
+    radial-gradient(circle at 50% 25%,#18243b,#070a11 55%,#020307);
 }
 
-.grid{
+.shift-grid{
     position:absolute;
     inset:-30%;
     background-image:
-      linear-gradient(#ffffff09 1px,transparent 1px),
-      linear-gradient(90deg,#ffffff09 1px,transparent 1px);
+    linear-gradient(#ffffff09 1px,transparent 1px),
+    linear-gradient(90deg,#ffffff09 1px,transparent 1px);
     background-size:45px 45px;
-    transform:
-      perspective(500px)
-      rotateX(58deg)
-      scale(1.5);
+    transform:perspective(500px) rotateX(58deg) scale(1.5);
     transform-origin:center bottom;
     animation:gridMove 1.8s linear infinite;
 }
 
 @keyframes gridMove{
-    from{
-        background-position:0 0;
-    }
-    to{
-        background-position:0 45px;
-    }
+    from{background-position:0 0}
+    to{background-position:0 45px}
 }
 
-#hud{
+#shiftHud{
     position:absolute;
-    top:16px;
-    left:15px;
+    top:15px;
+    left:70px;
     right:15px;
     z-index:20;
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    font-size:15px;
+    font-size:13px;
     font-weight:bold;
 }
 
 .hud-box{
-    padding:8px 11px;
+    padding:8px 10px;
     border-radius:9px;
     background:#0008;
     border:1px solid #ffffff15;
 }
 
-#difficulty{
+#shiftDifficulty{
     color:#ffd000;
 }
 
-.pause-btn{
-    position:absolute;
-    top:57px;
-    right:15px;
-    z-index:25;
-    width:42px;
-    height:38px;
-    border:1px solid #ffffff25;
-    border-radius:9px;
-    background:#ffffff12;
-    color:white;
-    font-size:17px;
-}
-
-.home-game{
-    position:absolute;
-    top:57px;
-    left:15px;
-    z-index:25;
-    width:42px;
-    height:38px;
-    border:1px solid #ffffff25;
-    border-radius:9px;
-    background:#ffffff12;
-    color:white;
-}
-
-/* Player */
-
-#player{
+#shiftPlayer{
     position:absolute;
     width:43px;
     height:43px;
@@ -260,16 +480,11 @@ button{
     transform:translateX(-50%);
     z-index:10;
     border-radius:12px;
-    background:
-      linear-gradient(135deg,#fff,#00eaff 40%,#008cff);
-    box-shadow:
-      0 0 10px #00eaff,
-      0 0 30px #00eaff,
-      0 0 60px #008cff80;
-    transition:left .08s;
+    background:linear-gradient(135deg,#fff,#00eaff 40%,#008cff);
+    box-shadow:0 0 10px #00eaff,0 0 30px #00eaff;
 }
 
-#player::after{
+#shiftPlayer::after{
     content:"";
     position:absolute;
     width:10px;
@@ -281,72 +496,33 @@ button{
     box-shadow:18px 0 0 #fff;
 }
 
-/* Obstacles */
-
-.obstacle{
+.shift-obstacle{
     position:absolute;
     width:46px;
     height:46px;
     border-radius:9px;
-    background:
-      linear-gradient(135deg,#ff667d,#ff1744 45%,#a90025);
-    box-shadow:
-      0 0 12px #ff1744,
-      0 0 28px #ff174480;
+    background:linear-gradient(135deg,#ff667d,#ff1744 45%,#a90025);
+    box-shadow:0 0 12px #ff1744,0 0 28px #ff174480;
     z-index:7;
 }
 
-.coin{
+.shift-coin{
     position:absolute;
     width:27px;
     height:27px;
     border-radius:50%;
-    background:
-      radial-gradient(circle at 35% 30%,#fff7a0,#ffd000 45%,#ff9500);
-    border:2px solid #fff1;
-    box-shadow:
-      0 0 10px #ffd000,
-      0 0 25px #ffb00080;
+    background:radial-gradient(circle at 35% 30%,#fff7a0,#ffd000 45%,#ff9500);
+    box-shadow:0 0 10px #ffd000;
     z-index:6;
     animation:coinSpin .7s linear infinite;
 }
 
 @keyframes coinSpin{
-    0%,100%{
-        transform:scaleX(1);
-    }
-    50%{
-        transform:scaleX(.45);
-    }
+    0%,100%{transform:scaleX(1)}
+    50%{transform:scaleX(.45)}
 }
 
-/* +10 */
-
-.coinText{
-    position:absolute;
-    z-index:30;
-    pointer-events:none;
-    color:#ffd000;
-    font-size:22px;
-    font-weight:1000;
-    text-shadow:0 0 10px #ffb000;
-    animation:coinPop .65s ease-out forwards;
-}
-
-@keyframes coinPop{
-    0%{
-        opacity:1;
-        transform:translateY(0) scale(1);
-    }
-    100%{
-        opacity:0;
-        transform:translateY(-55px) scale(1.25);
-    }
-}
-
-/* Controls */
-
-#controls{
+.shift-controls{
     position:absolute;
     left:18px;
     right:18px;
@@ -368,41 +544,166 @@ button{
     font-weight:bold;
     background:#ffffff12;
     border:1px solid #ffffff30;
-    box-shadow:0 5px 20px #0008;
-    user-select:none;
 }
 
-.control:active{
-    background:#00eaff35;
-    border-color:#00eaff80;
-    transform:scale(.94);
-}
-
-/* Pause */
-
-#pauseOverlay{
+.shift-overlay{
     position:absolute;
     inset:0;
-    z-index:40;
+    z-index:50;
     display:none;
     align-items:center;
     justify-content:center;
     flex-direction:column;
-    background:#000b;
+    background:#000c;
+    text-align:center;
 }
 
-#pauseOverlay h2{
+.shift-overlay h2{
     font-size:42px;
     color:#00eaff;
-    margin-bottom:25px;
 }
 
-/* Game over */
+.shift-overlay h3{
+    font-size:44px;
+    color:#ff1744;
+}
 
-#gameOver{
+/* ================= GALAXY ================= */
+
+#galaxyGame{
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    background:#0b0c10;
+}
+
+#galaxyContainer{
+    position:relative;
+    box-shadow:0 0 25px rgba(102,252,241,.3);
+    border-radius:8px;
+    overflow:hidden;
+}
+
+#galaxyCanvas{
+    background:radial-gradient(circle,#1f2833 0%,#0b0c10 100%);
+    display:block;
+}
+
+.galaxy-ui{
+    position:absolute;
+    top:10px;
+    left:15px;
+    right:15px;
+    display:flex;
+    justify-content:space-between;
+    font-size:15px;
+    font-weight:bold;
+    color:#66fcf1;
+    pointer-events:none;
+}
+
+.galaxy-controls{
+    display:flex;
+    justify-content:space-between;
+    width:100%;
+    max-width:400px;
+    padding:15px 20px;
+}
+
+.galaxy-dpad{
+    display:flex;
+    gap:15px;
+}
+
+.galaxy-btn{
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    border:2px solid #45a29e;
+    background:#1f2833cc;
+    color:#66fcf1;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.galaxy-fire{
+    background:#ff005533;
+    border-color:#ff0055;
+    color:#ff0055;
+    width:75px;
+    height:75px;
+}
+
+/* ================= TARGET RUSH ================= */
+
+#targetGame{
+    background:
+    radial-gradient(circle at center,#28304f 0%,#080a12 65%,#030407);
+}
+
+.target-hud{
+    position:absolute;
+    top:15px;
+    left:60px;
+    right:12px;
+    z-index:10;
+    display:flex;
+    justify-content:space-between;
+    gap:6px;
+}
+
+.target-hud-box{
+    background:#0009;
+    border:1px solid #ffffff22;
+    border-radius:10px;
+    padding:8px 10px;
+    font-size:12px;
+}
+
+#targetArena{
+    position:absolute;
+    top:70px;
+    left:0;
+    right:0;
+    bottom:0;
+    overflow:hidden;
+}
+
+.target{
+    position:absolute;
+    width:76px;
+    height:76px;
+    border-radius:50%;
+    background:
+    radial-gradient(circle,
+    #fff 0 10%,
+    #ff3434 11% 27%,
+    #fff 28% 43%,
+    #ff3434 44% 61%,
+    #fff 62% 100%);
+    border:3px solid white;
+    box-shadow:0 0 12px #ff3333,0 0 30px #ff2222;
+    cursor:pointer;
+    transform:translate(-50%,-50%);
+}
+
+.target-message{
+    position:absolute;
+    bottom:25px;
+    left:0;
+    right:0;
+    text-align:center;
+    font-weight:bold;
+    pointer-events:none;
+}
+
+.good{color:#2cff9a}
+.bad{color:#ff4455}
+
+.target-over{
     position:absolute;
     inset:0;
-    z-index:50;
+    z-index:80;
     display:none;
     align-items:center;
     justify-content:center;
@@ -411,61 +712,20 @@ button{
     text-align:center;
 }
 
-.game-over-title{
-    font-size:46px;
-    font-weight:1000;
-    color:#ff1744;
-    text-shadow:0 0 20px #ff1744;
+.target-over h2{
+    font-size:45px;
+    color:#ffcc00;
 }
 
-.final-score{
-    margin:12px 0 3px;
-    font-size:23px;
-}
-
-.new-best{
-    min-height:25px;
-    color:#ffd000;
-    font-weight:bold;
-}
-
-.go-buttons{
-    margin-top:22px;
-    display:flex;
-    gap:10px;
-}
-
-.go-btn{
-    border:0;
-    border-radius:11px;
-    padding:13px 19px;
-    font-weight:bold;
-}
-
-.again{
-    background:#00eaff;
-}
-
-.go-home{
-    color:#fff;
-    background:#ffffff15;
-    border:1px solid #ffffff25;
-}
-
-/* Desktop */
+/* ================= DESKTOP ================= */
 
 @media(min-width:700px){
-
-    #controls{
+    .shift-controls{
         display:none;
     }
 
-    #player{
+    #shiftPlayer{
         bottom:80px;
-    }
-
-    .home-game{
-        top:58px;
     }
 }
 </style>
@@ -473,170 +733,732 @@ button{
 
 <body>
 
-<!-- ================= HOME ================= -->
+<!-- ===================================================== -->
+<!-- HOME -->
+<!-- ===================================================== -->
 
 <section id="home" class="screen active">
 
-    <div class="home-glow"></div>
+    <header class="topbar">
 
-    <div class="logo">
-        ENDLESS<br>
-        <span class="logo-small">SHIFT</span>
-    </div>
+        <div class="brand">
 
-    <div class="tagline">
-        SURVIVE • COLLECT • BEAT YOUR SCORE
-    </div>
+            <div class="brand-logo">ES</div>
 
-    <div class="menu">
+            <div>
+                <div class="brand-name">ENDLESS SHIFT</div>
+                <div class="brand-sub">ARCADE COLLECTION</div>
+            </div>
 
-        <button class="btn play-btn" onclick="startGame()">
-            PLAY GAME 🎮
+        </div>
+
+        <button class="settings-top"
+                onclick="openSettings()">
+            ⚙️
         </button>
 
-        <button class="btn secondary-btn" onclick="showHowTo()">
-            HOW TO PLAY
-        </button>
+    </header>
+
+
+    <div class="hero">
+
+        <div class="main-logo">
+            ENDLESS<br>
+            <span>SHIFT</span>
+        </div>
+
+        <div class="tagline">
+            PLAY • SURVIVE • COMPETE
+        </div>
 
     </div>
 
-    <div class="best">
-        🏆 BEST SCORE:
-        <span id="homeBest">0</span>
+
+    <div class="games-title">
+        CHOOSE YOUR GAME
+    </div>
+
+
+    <div class="games">
+
+        <button class="game-card"
+                onclick="openShift()">
+
+            <div class="game-icon shift-icon">
+                🚀
+            </div>
+
+            <div class="game-info">
+
+                <div class="game-name">
+                    Endless Shift
+                </div>
+
+                <div class="game-desc">
+                    Survive, collect coins and beat your record.
+                </div>
+
+                <div class="best-home">
+                    🏆 BEST:
+                    <span id="shiftHomeBest">0</span>
+                </div>
+
+            </div>
+
+            <div class="game-arrow">
+                ›
+            </div>
+
+        </button>
+
+
+        <button class="game-card"
+                onclick="openGalaxy()">
+
+            <div class="game-icon galaxy-icon">
+                🌌
+            </div>
+
+            <div class="game-info">
+
+                <div class="game-name">
+                    Galaxy Defender
+                </div>
+
+                <div class="game-desc">
+                    Defend the galaxy and destroy incoming enemies.
+                </div>
+
+                <div class="best-home">
+                    ⭐ SCORE:
+                    <span id="galaxyHomeBest">0</span>
+                </div>
+
+            </div>
+
+            <div class="game-arrow">
+                ›
+            </div>
+
+        </button>
+
+
+        <button class="game-card"
+                onclick="openTarget()">
+
+            <div class="game-icon target-icon">
+                🎯
+            </div>
+
+            <div class="game-info">
+
+                <div class="game-name">
+                    Target Rush
+                </div>
+
+                <div class="game-desc">
+                    Aim fast, tap faster and survive the countdown.
+                </div>
+
+                <div class="best-home">
+                    🏆 BEST:
+                    <span id="targetHomeBest">0</span>
+                </div>
+
+            </div>
+
+            <div class="game-arrow">
+                ›
+            </div>
+
+        </button>
+
     </div>
 
 </section>
 
 
-<!-- ================= HOW TO ================= -->
+<!-- ===================================================== -->
+<!-- SETTINGS -->
+<!-- ===================================================== -->
+
+<section id="settings" class="screen">
+
+    <div class="page-box">
+
+        <div class="page-title">
+            ⚙️ SETTINGS
+        </div>
+
+
+        <div class="setting-item">
+
+            <div class="setting-left">
+                <div class="setting-name">
+                    🔊 Sound
+                </div>
+                <div class="setting-desc">
+                    Game sound effects
+                </div>
+            </div>
+
+            <button id="soundToggle"
+                    class="toggle on"
+                    onclick="toggleSound()">
+            </button>
+
+        </div>
+
+
+        <div class="setting-item">
+
+            <div class="setting-left">
+                <div class="setting-name">
+                    📳 Vibration
+                </div>
+                <div class="setting-desc">
+                    Vibration on supported devices
+                </div>
+            </div>
+
+            <button id="vibrationToggle"
+                    class="toggle on"
+                    onclick="toggleVibration()">
+            </button>
+
+        </div>
+
+
+        <button class="link-item"
+                onclick="openPrivacy()">
+            🔒 Privacy Policy
+        </button>
+
+        <button class="link-item"
+                onclick="openTerms()">
+            📜 Terms & Conditions
+        </button>
+
+        <button class="link-item"
+                onclick="openContact()">
+            📩 Contact Us
+        </button>
+
+        <button class="link-item"
+                onclick="openAbout()">
+            ℹ️ About Endless Shift
+        </button>
+
+        <button class="btn back"
+                onclick="showHome()">
+            ← BACK
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- PRIVACY -->
+<!-- ===================================================== -->
+
+<section id="privacy" class="screen">
+
+    <div class="page-box">
+
+        <div class="page-title">
+            🔒 PRIVACY POLICY
+        </div>
+
+        <div class="text-page">
+
+            <p>
+                <b>Endless Shift</b> is an arcade game collection
+                designed for entertainment.
+            </p>
+
+            <h3>Information We Collect</h3>
+
+            <p>
+                The games are designed to work locally on your
+                device. Game scores and settings may be stored
+                locally in your browser or app storage.
+            </p>
+
+            <h3>Personal Information</h3>
+
+            <p>
+                Endless Shift does not require you to create an
+                account or provide personal information to play
+                the games.
+            </p>
+
+            <h3>Third-Party Services</h3>
+
+            <p>
+                Future versions may include services such as
+                advertising or analytics. If such services are
+                added, this policy may be updated accordingly.
+            </p>
+
+            <h3>Children</h3>
+
+            <p>
+                The game is intended for general entertainment.
+                Parents or guardians should review the app
+                experience before allowing children to use it.
+            </p>
+
+            <h3>Changes</h3>
+
+            <p>
+                This Privacy Policy may be updated when the app
+                or its features change.
+            </p>
+
+        </div>
+
+        <button class="btn back"
+                onclick="openSettings()">
+            ← BACK
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- TERMS -->
+<!-- ===================================================== -->
+
+<section id="terms" class="screen">
+
+    <div class="page-box">
+
+        <div class="page-title">
+            📜 TERMS & CONDITIONS
+        </div>
+
+        <div class="text-page">
+
+            <h3>Use of the App</h3>
+
+            <p>
+                Endless Shift is provided for personal
+                entertainment and gaming purposes.
+            </p>
+
+            <h3>Game Scores</h3>
+
+            <p>
+                Scores are provided for entertainment.
+                Local scores may be stored on your device.
+            </p>
+
+            <h3>Availability</h3>
+
+            <p>
+                We try to keep the games working properly,
+                but features may change or temporarily become
+                unavailable.
+            </p>
+
+            <h3>Updates</h3>
+
+            <p>
+                The game collection may receive new games,
+                improvements and feature updates.
+            </p>
+
+            <h3>Acceptance</h3>
+
+            <p>
+                By using Endless Shift, you agree to these
+                Terms & Conditions.
+            </p>
+
+        </div>
+
+        <button class="btn back"
+                onclick="openSettings()">
+            ← BACK
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- CONTACT -->
+<!-- ===================================================== -->
+
+<section id="contact" class="screen">
+
+    <div class="page-box">
+
+        <div class="page-title">
+            📩 CONTACT US
+        </div>
+
+        <div class="text-page">
+
+            <p>
+                Have feedback, found a bug, or have an idea
+                for a new game?
+            </p>
+
+            <h3>Email</h3>
+
+            <p class="email">
+                himanshu22maurya22@gmail.com
+            </p>
+
+            <h3>Feedback</h3>
+
+            <p>
+                Your feedback helps improve Endless Shift
+                and future games.
+            </p>
+
+        </div>
+
+        <button class="btn primary"
+                onclick="sendEmail()">
+            ✉️ SEND EMAIL
+        </button>
+
+        <br>
+
+        <button class="btn back"
+                onclick="openSettings()">
+            ← BACK
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- ABOUT -->
+<!-- ===================================================== -->
+
+<section id="about" class="screen">
+
+    <div class="page-box">
+
+        <div class="page-title">
+            ℹ️ ABOUT
+        </div>
+
+        <div class="text-page">
+
+            <h3>ENDLESS SHIFT</h3>
+
+            <p>
+                A small arcade collection built around
+                simple controls, fast gameplay and increasing
+                difficulty.
+            </p>
+
+            <h3>Games</h3>
+
+            <p>
+                🚀 Endless Shift<br>
+                🌌 Galaxy Defender<br>
+                🎯 Target Rush
+            </p>
+
+            <h3>Developer</h3>
+
+            <p>
+                Development by <b>Himanshu Maurya</b>.
+            </p>
+
+            <p>
+                Version 1.0
+            </p>
+
+        </div>
+
+        <button class="btn back"
+                onclick="openSettings()">
+            ← BACK
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- HOW TO -->
+<!-- ===================================================== -->
 
 <section id="howto" class="screen">
 
-    <div class="how-title">
-        HOW TO PLAY
+    <div class="page-box">
+
+        <div class="page-title">
+            HOW TO PLAY
+        </div>
+
+        <div class="rules">
+
+            <div class="rule">
+                🚀 <b>Endless Shift</b><br>
+                Move left/right, avoid red obstacles and
+                collect yellow coins.
+            </div>
+
+            <div class="rule">
+                🌌 <b>Galaxy Defender</b><br>
+                Move your spaceship and shoot incoming enemies.
+            </div>
+
+            <div class="rule">
+                🎯 <b>Target Rush</b><br>
+                Tap the targets quickly. Wrong taps and missed
+                targets cost lives.
+            </div>
+
+            <div class="rule">
+                🔥 Difficulty increases as you play.
+            </div>
+
+            <div class="rule">
+                🏆 Try to beat your best score.
+            </div>
+
+        </div>
+
+        <button class="btn back"
+                onclick="showHome()">
+            ← HOME
+        </button>
+
     </div>
-
-    <div class="rules">
-
-        <div class="rule">
-            🔵 <b>Move:</b> Left / Right buttons
-        </div>
-
-        <div class="rule">
-            🔴 <b>Red:</b> Touch = GAME OVER
-        </div>
-
-        <div class="rule">
-            🟡 <b>Yellow:</b> Collect = +10 SCORE
-        </div>
-
-        <div class="rule">
-            ⚡ <b>Difficulty:</b> Gets harder as you survive
-        </div>
-
-        <div class="rule">
-            🎲 <b>Random:</b> Every run changes
-        </div>
-
-        <div class="rule">
-            🏆 <b>Goal:</b> Beat your best score
-        </div>
-
-    </div>
-
-    <button class="back-btn" onclick="showHome()">
-        🏠 BACK
-    </button>
 
 </section>
 
 
-<!-- ================= GAME ================= -->
+<!-- ===================================================== -->
+<!-- ENDLESS SHIFT GAME -->
+<!-- ===================================================== -->
 
-<section id="game" class="screen">
+<section id="shiftGame" class="screen game-screen">
 
-    <div class="grid"></div>
+    <div class="shift-grid"></div>
 
-    <div id="hud">
+    <button class="game-home"
+            onclick="exitShift()">
+        🏠
+    </button>
+
+    <div id="shiftHud">
 
         <div class="hud-box">
-            SCORE: <span id="score">0</span>
+            SCORE: <span id="shiftScore">0</span>
         </div>
 
-        <div class="hud-box" id="difficulty">
+        <div class="hud-box"
+             id="shiftDifficulty">
             LEVEL 1
         </div>
 
         <div class="hud-box">
-            BEST: <span id="best">0</span>
+            BEST: <span id="shiftBest">0</span>
         </div>
 
     </div>
 
-    <button class="home-game" onclick="showHome()">
-        🏠
-    </button>
+    <div id="shiftPlayer"></div>
 
-    <button class="pause-btn" onclick="togglePause()">
-        ⏸
-    </button>
+    <div class="shift-controls">
 
-    <div id="player"></div>
-
-    <div id="controls">
-
-        <div class="control" id="left">
+        <div class="control"
+             id="shiftLeft">
             ◀
         </div>
 
-        <div class="control" id="right">
+        <div class="control"
+             id="shiftRight">
             ▶
         </div>
 
     </div>
 
 
-    <!-- PAUSE -->
-
-    <div id="pauseOverlay">
+    <div id="shiftPause"
+         class="shift-overlay">
 
         <h2>PAUSED</h2>
 
-        <button class="btn play-btn" onclick="togglePause()">
+        <button class="btn primary"
+                onclick="toggleShiftPause()">
             RESUME
         </button>
 
     </div>
 
 
-    <!-- GAME OVER -->
+    <div id="shiftOver"
+         class="shift-overlay">
 
-    <div id="gameOver">
+        <h3>GAME OVER</h3>
 
-        <div class="game-over-title">
-            GAME OVER
-        </div>
-
-        <div class="final-score">
+        <div style="margin:15px;font-size:22px">
             SCORE:
-            <span id="finalScore">0</span>
+            <span id="shiftFinal">0</span>
         </div>
 
-        <div class="new-best" id="newBest"></div>
+        <button class="btn primary"
+                onclick="startShift()">
+            PLAY AGAIN
+        </button>
 
-        <div class="go-buttons">
+        <button class="btn secondary"
+                style="margin-top:10px"
+                onclick="exitShift()">
+            HOME
+        </button>
 
-            <button class="go-btn again"
-                    onclick="restartGame()">
-                PLAY AGAIN
+    </div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- GALAXY DEFENDER -->
+<!-- ===================================================== -->
+
+<section id="galaxyGame" class="screen game-screen">
+
+    <button class="game-home"
+            onclick="exitGalaxy()">
+        🏠
+    </button>
+
+    <div id="galaxyContainer">
+
+        <div class="galaxy-ui">
+
+            <div>
+                SCORE:
+                <span id="galaxyScore">0</span>
+            </div>
+
+            <div>
+                HP:
+                <span id="galaxyHP">❤️❤️❤️</span>
+            </div>
+
+        </div>
+
+        <canvas id="galaxyCanvas"
+                width="380"
+                height="520">
+        </canvas>
+
+    </div>
+
+
+    <div class="galaxy-controls">
+
+        <div class="galaxy-dpad">
+
+            <button class="galaxy-btn"
+                    id="galaxyLeft">
+                ◀
             </button>
 
-            <button class="go-btn go-home"
-                    onclick="showHome()">
-                HOME
+            <button class="galaxy-btn"
+                    id="galaxyRight">
+                ▶
             </button>
 
         </div>
+
+        <button class="galaxy-btn galaxy-fire"
+                id="galaxyShoot">
+            ⚡
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- TARGET RUSH -->
+<!-- ===================================================== -->
+
+<section id="targetGame" class="screen game-screen">
+
+    <button class="game-home"
+            onclick="exitTarget()">
+        🏠
+    </button>
+
+    <div class="target-hud">
+
+        <div class="target-hud-box">
+            Score:
+            <b id="targetScore">0</b>
+        </div>
+
+        <div class="target-hud-box">
+            Level:
+            <b id="targetLevel">1</b>
+        </div>
+
+        <div class="target-hud-box">
+            ❤️
+            <b id="targetLives">3</b>
+        </div>
+
+        <div class="target-hud-box">
+            ⏱️
+            <b id="targetTime">3.0</b>
+        </div>
+
+    </div>
+
+    <div id="targetArena"></div>
+
+    <div id="targetMessage"
+         class="target-message">
+    </div>
+
+    <div id="targetOver"
+         class="target-over">
+
+        <h2>GAME OVER</h2>
+
+        <div style="margin:15px;font-size:22px">
+            Score:
+            <b id="targetFinal">0</b>
+        </div>
+
+        <div style="color:#ffcc00">
+            Best:
+            <b id="targetBest">0</b>
+        </div>
+
+        <button class="btn primary"
+                style="margin-top:20px"
+                onclick="startTarget()">
+            PLAY AGAIN
+        </button>
+
+        <button class="btn secondary"
+                style="margin-top:10px"
+                onclick="exitTarget()">
+            HOME
+        </button>
 
     </div>
 
@@ -645,162 +1467,210 @@ button{
 
 <script>
 
-/* ================= ELEMENTS ================= */
+/* =========================================================
+   GLOBAL APP
+========================================================= */
 
-const home =
-    document.getElementById("home");
+let soundEnabled =
+    localStorage.getItem("esSound") !== "off";
 
-const game =
-    document.getElementById("game");
-
-const howto =
-    document.getElementById("howto");
-
-const player =
-    document.getElementById("player");
-
-const scoreText =
-    document.getElementById("score");
-
-const bestText =
-    document.getElementById("best");
-
-const homeBest =
-    document.getElementById("homeBest");
-
-const difficultyText =
-    document.getElementById("difficulty");
-
-const gameOver =
-    document.getElementById("gameOver");
-
-const finalScore =
-    document.getElementById("finalScore");
-
-const newBest =
-    document.getElementById("newBest");
-
-const pauseOverlay =
-    document.getElementById("pauseOverlay");
+let vibrationEnabled =
+    localStorage.getItem("esVibration") !== "off";
 
 
-/* ================= GAME VARIABLES ================= */
+function hideAll(){
 
-let playerX =
-    window.innerWidth / 2;
-
-let score = 0;
-
-let best =
-    Number(localStorage.getItem("endlessShiftBest")) || 0;
-
-let speed = 4;
-
-let level = 1;
-
-let gameRunning = false;
-
-let paused = false;
-
-let objects = [];
-
-let lastTime = 0;
-
-let spawnTimer = 0;
-
-let audioContext;
-
-
-/* ================= INIT ================= */
-
-homeBest.textContent = best;
-bestText.textContent = best;
-
-
-/* ================= SCREENS ================= */
-
-function hideScreens(){
-
-    home.classList.remove("active");
-    game.classList.remove("active");
-    howto.classList.remove("active");
+    document
+    .querySelectorAll(".screen")
+    .forEach(s=>{
+        s.classList.remove("active");
+    });
 
 }
 
 
 function showHome(){
 
-    gameRunning = false;
-    paused = false;
+    stopAllGames();
 
-    hideScreens();
+    hideAll();
 
-    home.classList.add("active");
+    document
+    .getElementById("home")
+    .classList.add("active");
 
-    homeBest.textContent = best;
-
-    clearObjects();
-
-}
-
-
-function showHowTo(){
-
-    gameRunning = false;
-
-    hideScreens();
-
-    howto.classList.add("active");
-
-    clearObjects();
+    updateHomeScores();
 
 }
 
 
-/* ================= AUDIO ================= */
+function openSettings(){
 
-function sound(type){
+    stopAllGames();
+
+    hideAll();
+
+    document
+    .getElementById("settings")
+    .classList.add("active");
+
+}
+
+
+function openPrivacy(){
+
+    hideAll();
+
+    document
+    .getElementById("privacy")
+    .classList.add("active");
+
+}
+
+
+function openTerms(){
+
+    hideAll();
+
+    document
+    .getElementById("terms")
+    .classList.add("active");
+
+}
+
+
+function openContact(){
+
+    hideAll();
+
+    document
+    .getElementById("contact")
+    .classList.add("active");
+
+}
+
+
+function openAbout(){
+
+    hideAll();
+
+    document
+    .getElementById("about")
+    .classList.add("active");
+
+}
+
+
+function sendEmail(){
+
+    window.location.href =
+    "mailto:himanshu22maurya22@gmail.com";
+
+}
+
+
+function toggleSound(){
+
+    soundEnabled = !soundEnabled;
+
+    localStorage.setItem(
+        "esSound",
+        soundEnabled ? "on" : "off"
+    );
+
+    updateSettings();
+
+}
+
+
+function toggleVibration(){
+
+    vibrationEnabled = !vibrationEnabled;
+
+    localStorage.setItem(
+        "esVibration",
+        vibrationEnabled ? "on" : "off"
+    );
+
+    updateSettings();
+
+}
+
+
+function updateSettings(){
+
+    document
+    .getElementById("soundToggle")
+    .classList.toggle(
+        "on",
+        soundEnabled
+    );
+
+    document
+    .getElementById("vibrationToggle")
+    .classList.toggle(
+        "on",
+        vibrationEnabled
+    );
+
+}
+
+
+updateSettings();
+
+
+function vibrate(){
+
+    if(
+        vibrationEnabled &&
+        navigator.vibrate
+    ){
+        navigator.vibrate(25);
+    }
+
+}
+
+
+function beep(freq=600){
+
+    if(!soundEnabled)
+        return;
 
     try{
 
-        if(!audioContext){
+        const AC =
+        window.AudioContext ||
+        window.webkitAudioContext;
 
-            audioContext =
-                new (window.AudioContext ||
-                window.webkitAudioContext)();
-
-        }
+        const audio =
+        new AC();
 
         const osc =
-            audioContext.createOscillator();
+        audio.createOscillator();
 
         const gain =
-            audioContext.createGain();
+        audio.createGain();
 
         osc.connect(gain);
-        gain.connect(audioContext.destination);
+        gain.connect(
+            audio.destination
+        );
 
-        if(type === "coin"){
+        osc.frequency.value =
+        freq;
 
-            osc.frequency.value = 720;
-            gain.gain.value = .06;
-
-        }else{
-
-            osc.frequency.value = 100;
-            gain.gain.value = .05;
-
-        }
+        gain.gain.value =
+        .04;
 
         osc.start();
 
         gain.gain.exponentialRampToValueAtTime(
             .001,
-            audioContext.currentTime + .12
+            audio.currentTime+.12
         );
 
         osc.stop(
-            audioContext.currentTime + .12
+            audio.currentTime+.12
         );
 
     }catch(e){}
@@ -808,584 +1678,1486 @@ function sound(type){
 }
 
 
-/* ================= START ================= */
+function updateHomeScores(){
 
-function startGame(){
-
-    hideScreens();
-
-    game.classList.add("active");
-
-    resetGame();
-
-    gameRunning = true;
-
-    paused = false;
-
-    requestAnimationFrame(gameLoop);
-
-}
+    document
+    .getElementById("shiftHomeBest")
+    .textContent =
+    localStorage.getItem(
+        "endlessShiftBest"
+    ) || 0;
 
 
-/* ================= RESET ================= */
+    document
+    .getElementById("galaxyHomeBest")
+    .textContent =
+    localStorage.getItem(
+        "galaxyBest"
+    ) || 0;
 
-function resetGame(){
 
-    clearObjects();
-
-    score = 0;
-
-    speed = 4;
-
-    level = 1;
-
-    spawnTimer = 0;
-
-    playerX =
-        window.innerWidth / 2;
-
-    player.style.left =
-        playerX + "px";
-
-    scoreText.textContent = "0";
-
-    difficultyText.textContent =
-        "LEVEL 1";
-
-    bestText.textContent =
-        best;
-
-    gameOver.style.display =
-        "none";
-
-    pauseOverlay.style.display =
-        "none";
-
-    newBest.textContent = "";
+    document
+    .getElementById("targetHomeBest")
+    .textContent =
+    localStorage.getItem(
+        "targetRushBest"
+    ) || 0;
 
 }
 
 
-/* ================= PLAYER ================= */
+function stopAllGames(){
 
-function movePlayer(direction){
+    stopShift();
 
-    if(!gameRunning || paused)
-        return;
+    stopGalaxy();
 
-    playerX += direction * 48;
-
-    const min =
-        25;
-
-    const max =
-        window.innerWidth - 25;
-
-    playerX =
-        Math.max(min,
-        Math.min(max,playerX));
-
-    player.style.left =
-        playerX + "px";
+    stopTarget();
 
 }
 
 
-document.addEventListener(
-    "keydown",
-    function(e){
-
-        if(!gameRunning)
-            return;
-
-        if(e.key === "ArrowLeft" ||
-           e.key.toLowerCase() === "a"){
-
-            movePlayer(-1);
-
-        }
-
-        if(e.key === "ArrowRight" ||
-           e.key.toLowerCase() === "d"){
-
-            movePlayer(1);
-
-        }
-
-        if(e.key === " " ||
-           e.key.toLowerCase() === "p"){
-
-            togglePause();
-
-        }
-
-    }
-);
+updateHomeScores();
 
 
-/* Mobile */
+/* =========================================================
+   ENDLESS SHIFT
+========================================================= */
 
-function buttonPress(element,direction){
+const shiftGame =
+document.getElementById("shiftGame");
 
-    element.addEventListener(
-        "touchstart",
-        function(e){
+const shiftPlayer =
+document.getElementById("shiftPlayer");
 
+let shiftX =
+window.innerWidth/2;
+
+let shiftScore = 0;
+let shiftBest =
+Number(localStorage.getItem(
+    "endlessShiftBest"
+)) || 0;
+
+let shiftLevel = 1;
+let shiftSpeed = 4;
+let shiftRunning = false;
+let shiftPaused = false;
+let shiftObjects = [];
+let shiftLastTime = 0;
+let shiftSpawn = 0;
+
+
+function openShift(){
+
+    hideAll();
+
+    shiftGame.classList.add("active");
+
+    startShift();
+
+}
+
+
+function startShift(){
+
+    clearShiftObjects();
+
+    shiftScore = 0;
+    shiftLevel = 1;
+    shiftSpeed = 4;
+    shiftSpawn = 0;
+    shiftLastTime = 0;
+
+    shiftX =
+    window.innerWidth/2;
+
+    shiftPlayer.style.left =
+    shiftX+"px";
+
+    shiftRunning = true;
+    shiftPaused = false;
+
+    document
+    .getElementById("shiftPause")
+    .style.display="none";
+
+    document
+    .getElementById("shiftOver")
+    .style.display="none";
+
+    requestAnimationFrame(
+        shiftLoop
+    );
+
+}
+
+
+function moveShift(dir){
+
+    if(
+        !shiftRunning ||
+        shiftPaused
+    ) return;
+
+    shiftX += dir*48;
+
+    shiftX =
+    Math.max(
+        25,
+        Math.min(
+            window.innerWidth-25,
+            shiftX
+        )
+    );
+
+    shiftPlayer.style.left =
+    shiftX+"px";
+
+    vibrate();
+
+}
+
+
+function shiftButton(el,dir){
+
+    el.addEventListener(
+        "pointerdown",
+        e=>{
             e.preventDefault();
-
-            movePlayer(direction);
-
-        },
-        {passive:false}
-    );
-
-    element.addEventListener(
-        "mousedown",
-        function(){
-
-            movePlayer(direction);
-
+            moveShift(dir);
         }
     );
 
 }
 
-buttonPress(
-    document.getElementById("left"),
+
+shiftButton(
+    document.getElementById("shiftLeft"),
     -1
 );
 
-buttonPress(
-    document.getElementById("right"),
+shiftButton(
+    document.getElementById("shiftRight"),
     1
 );
 
 
-/* ================= OBJECT CREATION ================= */
+document.addEventListener(
+    "keydown",
+    e=>{
 
-function createObstacle(){
+        if(!shiftRunning)
+            return;
 
-    if(!gameRunning || paused)
-        return;
+        if(e.key==="ArrowLeft")
+            moveShift(-1);
 
-    const obstacle =
-        document.createElement("div");
+        if(e.key==="ArrowRight")
+            moveShift(1);
 
-    obstacle.className =
-        "obstacle";
+        if(e.key===" ")
+            toggleShiftPause();
+
+    }
+);
+
+
+function createShiftObject(type){
+
+    const el =
+    document.createElement("div");
 
     const x =
-        Math.random() *
-        (window.innerWidth - 55);
+    Math.random()*
+    (window.innerWidth-
+    (type==="coin"?38:55));
 
-    obstacle.style.left =
-        x + "px";
+    if(type==="coin")
+        el.className="shift-coin";
+    else
+        el.className="shift-obstacle";
 
-    obstacle.style.top =
-        "-70px";
+    el.style.left=x+"px";
+    el.style.top="-70px";
 
-    game.appendChild(obstacle);
+    shiftGame.appendChild(el);
 
-    objects.push({
-
-        element: obstacle,
-
-        type: "obstacle",
-
-        x: x,
-
-        y: -70
-
+    shiftObjects.push({
+        element:el,
+        type:type,
+        x:x,
+        y:-70
     });
 
 }
 
 
-function createCoin(){
-
-    if(!gameRunning || paused)
-        return;
-
-    const coin =
-        document.createElement("div");
-
-    coin.className =
-        "coin";
-
-    const x =
-        Math.random() *
-        (window.innerWidth - 38);
-
-    coin.style.left =
-        x + "px";
-
-    coin.style.top =
-        "-40px";
-
-    game.appendChild(coin);
-
-    objects.push({
-
-        element: coin,
-
-        type: "coin",
-
-        x: x,
-
-        y: -40
-
-    });
-
-}
-
-
-/* ================= COLLISION ================= */
-
-function collision(a,b){
+function shiftCollision(a,b){
 
     const ar =
-        a.getBoundingClientRect();
+    a.getBoundingClientRect();
 
     const br =
-        b.getBoundingClientRect();
+    b.getBoundingClientRect();
 
     return !(
-        ar.right < br.left ||
-        ar.left > br.right ||
-        ar.bottom < br.top ||
-        ar.top > br.bottom
+        ar.right<br.left ||
+        ar.left>br.right ||
+        ar.bottom<br.top ||
+        ar.top>br.bottom
     );
 
 }
 
 
-/* ================= GAME LOOP ================= */
+function shiftLoop(time){
 
-function gameLoop(time){
-
-    if(!gameRunning)
+    if(!shiftRunning)
         return;
 
-    if(paused){
+    if(shiftPaused){
 
-        requestAnimationFrame(gameLoop);
+        requestAnimationFrame(
+            shiftLoop
+        );
 
         return;
 
     }
 
-    if(!lastTime)
-        lastTime = time;
+    if(!shiftLastTime)
+        shiftLastTime=time;
 
     const delta =
-        Math.min(
-            (time-lastTime)/16.67,
-            2
-        );
+    Math.min(
+        (time-shiftLastTime)/16.67,
+        2
+    );
 
-    lastTime = time;
+    shiftLastTime=time;
 
-    /* Move objects */
 
     for(
-        let i = objects.length-1;
-        i >= 0;
+        let i=shiftObjects.length-1;
+        i>=0;
         i--
     ){
 
         const obj =
-            objects[i];
+        shiftObjects[i];
 
         obj.y +=
-            speed * delta;
+        shiftSpeed*delta;
 
         obj.element.style.top =
-            obj.y + "px";
+        obj.y+"px";
 
-
-        /* Collision */
 
         if(
-            collision(
-                player,
+            shiftCollision(
+                shiftPlayer,
                 obj.element
             )
         ){
 
-            /* RED */
+            if(obj.type==="obstacle"){
 
-            if(
-                obj.type === "obstacle"
-            ){
-
-                sound("hit");
-
-                endGame();
+                endShift();
 
                 return;
 
             }
 
+            shiftScore+=10;
 
-            /* YELLOW */
+            beep(720);
+            vibrate();
+
+            obj.element.remove();
+
+            shiftObjects.splice(i,1);
+
+            continue;
+
+        }
+
+
+        if(
+            obj.y>
+            window.innerHeight+100
+        ){
+
+            obj.element.remove();
+
+            shiftObjects.splice(i,1);
+
+        }
+
+    }
+
+
+    shiftScore +=
+    .035*delta;
+
+
+    shiftLevel =
+    Math.floor(
+        shiftScore/100
+    )+1;
+
+    shiftSpeed =
+    Math.min(
+        12,
+        4+shiftLevel*.45
+    );
+
+
+    document
+    .getElementById("shiftScore")
+    .textContent =
+    Math.floor(shiftScore);
+
+    document
+    .getElementById("shiftDifficulty")
+    .textContent =
+    "LEVEL "+shiftLevel;
+
+    document
+    .getElementById("shiftBest")
+    .textContent =
+    shiftBest;
+
+
+    shiftSpawn +=
+    delta*16.67;
+
+
+    const rate =
+    Math.max(
+        390,
+        850-shiftLevel*25
+    );
+
+
+    if(shiftSpawn>=rate){
+
+        shiftSpawn=0;
+
+        createShiftObject(
+            "obstacle"
+        );
+
+        if(
+            Math.random() >
+            Math.max(
+                .18,
+                .40-shiftLevel*.01
+            )
+        ){
+            createShiftObject("coin");
+        }
+
+    }
+
+
+    requestAnimationFrame(
+        shiftLoop
+    );
+
+}
+
+
+function toggleShiftPause(){
+
+    if(!shiftRunning)
+        return;
+
+    shiftPaused =
+    !shiftPaused;
+
+    document
+    .getElementById("shiftPause")
+    .style.display =
+    shiftPaused ? "flex":"none";
+
+}
+
+
+function endShift(){
+
+    shiftRunning=false;
+
+    const final =
+    Math.floor(shiftScore);
+
+    if(final>shiftBest){
+
+        shiftBest=final;
+
+        localStorage.setItem(
+            "endlessShiftBest",
+            shiftBest
+        );
+
+    }
+
+    document
+    .getElementById("shiftFinal")
+    .textContent=final;
+
+    document
+    .getElementById("shiftOver")
+    .style.display="flex";
+
+    beep(120);
+
+}
+
+
+function clearShiftObjects(){
+
+    shiftObjects.forEach(
+        o=>o.element.remove()
+    );
+
+    shiftObjects=[];
+
+}
+
+
+function stopShift(){
+
+    shiftRunning=false;
+    shiftPaused=false;
+
+    clearShiftObjects();
+
+    document
+    .getElementById("shiftPause")
+    .style.display="none";
+
+    document
+    .getElementById("shiftOver")
+    .style.display="none";
+
+}
+
+
+function exitShift(){
+
+    stopShift();
+
+    showHome();
+
+}
+
+
+/* =========================================================
+   GALAXY DEFENDER
+========================================================= */
+
+const galaxyCanvas =
+document.getElementById(
+    "galaxyCanvas"
+);
+
+const galaxyCtx =
+galaxyCanvas.getContext("2d");
+
+let galaxyScore=0;
+let galaxyLives=3;
+let galaxyOver=false;
+let galaxyRunning=false;
+
+let galaxyBullets=[];
+let galaxyEnemies=[];
+let galaxyStars=[];
+
+const galaxyPlayer={
+    x:galaxyCanvas.width/2-15,
+    y:galaxyCanvas.height-60,
+    width:32,
+    height:32,
+    speed:5,
+    dx:0
+};
+
+
+for(let i=0;i<40;i++){
+
+    galaxyStars.push({
+        x:Math.random()*
+        galaxyCanvas.width,
+        y:Math.random()*
+        galaxyCanvas.height,
+        size:Math.random()*2+1,
+        speed:Math.random()*2+.5
+    });
+
+}
+
+
+function openGalaxy(){
+
+    hideAll();
+
+    document
+    .getElementById("galaxyGame")
+    .classList.add("active");
+
+    startGalaxy();
+
+}
+
+
+function startGalaxy(){
+
+    galaxyScore=0;
+    galaxyLives=3;
+    galaxyOver=false;
+    galaxyRunning=true;
+
+    galaxyBullets=[];
+    galaxyEnemies=[];
+
+    galaxyPlayer.x=
+    galaxyCanvas.width/2-15;
+
+    document
+    .getElementById("galaxyScore")
+    .textContent=0;
+
+    updateGalaxyHP();
+
+    requestAnimationFrame(
+        galaxyLoop
+    );
+
+}
+
+
+function galaxyMove(dir){
+
+    if(
+        !galaxyRunning ||
+        galaxyOver
+    ) return;
+
+    galaxyPlayer.dx =
+    dir*galaxyPlayer.speed;
+
+}
+
+
+function galaxyShoot(){
+
+    if(
+        !galaxyRunning ||
+        galaxyOver
+    ) return;
+
+    galaxyBullets.push({
+
+        x:
+        galaxyPlayer.x+
+        galaxyPlayer.width/2-2,
+
+        y:galaxyPlayer.y,
+
+        width:4,
+        height:10,
+        speed:7
+
+    });
+
+    beep(800);
+
+}
+
+
+document
+.getElementById("galaxyLeft")
+.addEventListener(
+    "pointerdown",
+    e=>{
+        e.preventDefault();
+        galaxyMove(-1);
+    }
+);
+
+document
+.getElementById("galaxyRight")
+.addEventListener(
+    "pointerdown",
+    e=>{
+        e.preventDefault();
+        galaxyMove(1);
+    }
+);
+
+document
+.getElementById("galaxyLeft")
+.addEventListener(
+    "pointerup",
+    ()=>galaxyPlayer.dx=0
+);
+
+document
+.getElementById("galaxyRight")
+.addEventListener(
+    "pointerup",
+    ()=>galaxyPlayer.dx=0
+);
+
+document
+.getElementById("galaxyShoot")
+.addEventListener(
+    "pointerdown",
+    e=>{
+        e.preventDefault();
+        galaxyShoot();
+    }
+);
+
+
+function spawnGalaxyEnemy(){
+
+    if(
+        !galaxyRunning ||
+        galaxyOver
+    ) return;
+
+    const size =
+    Math.random()*20+20;
+
+    galaxyEnemies.push({
+
+        x:
+        Math.random()*
+        (galaxyCanvas.width-size),
+
+        y:-size,
+
+        width:size,
+        height:size,
+
+        speed:
+        Math.random()*2+1.5,
+
+        color:[
+            "#ff0055",
+            "#ff9900",
+            "#c800ff"
+        ][
+            Math.floor(
+                Math.random()*3
+            )
+        ]
+
+    });
+
+}
+
+
+let galaxySpawnTimer=setInterval(
+    spawnGalaxyEnemy,
+    900
+);
+
+
+function updateGalaxy(){
+
+    if(
+        !galaxyRunning ||
+        galaxyOver
+    ) return;
+
+
+    if(galaxyPlayer.dx)
+        galaxyPlayer.x +=
+        galaxyPlayer.dx;
+
+
+    if(galaxyPlayer.x<0)
+        galaxyPlayer.x=0;
+
+    if(
+        galaxyPlayer.x+
+        galaxyPlayer.width>
+        galaxyCanvas.width
+    ){
+        galaxyPlayer.x=
+        galaxyCanvas.width-
+        galaxyPlayer.width;
+    }
+
+
+    galaxyStars.forEach(
+        s=>{
+            s.y+=s.speed;
 
             if(
-                obj.type === "coin"
+                s.y>
+                galaxyCanvas.height
+            ) s.y=0;
+        }
+    );
+
+
+    for(
+        let i=galaxyBullets.length-1;
+        i>=0;
+        i--
+    ){
+
+        const b=
+        galaxyBullets[i];
+
+        b.y-=b.speed;
+
+        if(b.y<0)
+            galaxyBullets.splice(i,1);
+
+    }
+
+
+    for(
+        let i=galaxyEnemies.length-1;
+        i>=0;
+        i--
+    ){
+
+        const e=
+        galaxyEnemies[i];
+
+        e.y+=e.speed;
+
+
+        if(
+            e.y>
+            galaxyCanvas.height
+        ){
+
+            galaxyEnemies.splice(i,1);
+
+            galaxyLives--;
+
+            updateGalaxyHP();
+
+            if(galaxyLives<=0){
+                galaxyEnd();
+                return;
+            }
+
+            continue;
+
+        }
+
+
+        for(
+            let j=galaxyBullets.length-1;
+            j>=0;
+            j--
+        ){
+
+            const b=
+            galaxyBullets[j];
+
+            if(
+                b.x<
+                e.x+e.width &&
+                b.x+b.width>
+                e.x &&
+                b.y<
+                e.y+e.height &&
+                b.y+b.height>
+                e.y
             ){
 
-                score += 10;
+                galaxyEnemies.splice(i,1);
+                galaxyBullets.splice(j,1);
 
-                sound("coin");
+                galaxyScore+=10;
 
-                showCoinText(
-                    obj.x,
-                    obj.y
-                );
+                document
+                .getElementById(
+                    "galaxyScore"
+                )
+                .textContent=
+                galaxyScore;
 
-                obj.element.remove();
+                beep(700);
 
-                objects.splice(i,1);
-
-                continue;
+                break;
 
             }
 
         }
 
 
-        /* Remove */
-
         if(
-            obj.y >
-            window.innerHeight + 100
+            i<galaxyEnemies.length &&
+            galaxyEnemies[i] &&
+            galaxyPlayer.x<
+            e.x+e.width &&
+            galaxyPlayer.x+
+            galaxyPlayer.width>
+            e.x &&
+            galaxyPlayer.y<
+            e.y+e.height &&
+            galaxyPlayer.y+
+            galaxyPlayer.height>
+            e.y
         ){
 
-            obj.element.remove();
+            galaxyEnemies.splice(i,1);
 
-            objects.splice(i,1);
+            galaxyLives--;
+
+            updateGalaxyHP();
+
+            if(galaxyLives<=0){
+                galaxyEnd();
+                return;
+            }
 
         }
 
     }
 
-
-    /* Score */
-
-    score +=
-        .035 * delta;
+}
 
 
-    /* Difficulty */
+function updateGalaxyHP(){
 
-    level =
-        Math.floor(score/100)+1;
+    let hp="";
 
-    speed =
-        Math.min(
-            12,
-            4 + level * .45
-        );
+    for(
+        let i=0;
+        i<galaxyLives;
+        i++
+    ) hp+="❤️";
+
+    document
+    .getElementById("galaxyHP")
+    .textContent=
+    hp||"DEAD";
+
+}
 
 
-    scoreText.textContent =
-        Math.floor(score);
+function drawGalaxy(){
 
-    difficultyText.textContent =
-        "LEVEL " + level;
+    galaxyCtx.clearRect(
+        0,
+        0,
+        galaxyCanvas.width,
+        galaxyCanvas.height
+    );
 
 
-    /* Spawn */
+    galaxyCtx.fillStyle="#fff";
 
-    spawnTimer +=
-        delta * 16.67;
-
-    const spawnRate =
-        Math.max(
-            390,
-            850 - level * 25
-        );
-
-    if(spawnTimer >= spawnRate){
-
-        spawnTimer = 0;
-
-        createObstacle();
-
-        /*
-         * Higher level =
-         * more coins and
-         * more objects.
-         */
-
-        if(
-            Math.random() >
-            Math.max(.18,
-            .40 - level*.01)
-        ){
-
-            createCoin();
-
+    galaxyStars.forEach(
+        s=>{
+            galaxyCtx.fillRect(
+                s.x,
+                s.y,
+                s.size,
+                s.size
+            );
         }
-
-    }
-
-
-    requestAnimationFrame(
-        gameLoop
     );
 
-}
 
+    if(!galaxyOver){
 
-/* ================= COIN EFFECT ================= */
+        galaxyCtx.fillStyle="#66fcf1";
 
-function showCoinText(x,y){
+        galaxyCtx.beginPath();
 
-    const text =
-        document.createElement("div");
-
-    text.className =
-        "coinText";
-
-    text.textContent =
-        "+10";
-
-    text.style.left =
-        x + "px";
-
-    text.style.top =
-        y + "px";
-
-    game.appendChild(text);
-
-    setTimeout(
-        ()=>{
-            text.remove();
-        },
-        650
-    );
-
-}
-
-
-/* ================= PAUSE ================= */
-
-function togglePause(){
-
-    if(!gameRunning)
-        return;
-
-    paused = !paused;
-
-    pauseOverlay.style.display =
-        paused ? "flex" : "none";
-
-}
-
-
-/* ================= GAME OVER ================= */
-
-function endGame(){
-
-    gameRunning = false;
-
-    paused = false;
-
-    const final =
-        Math.floor(score);
-
-    const wasNewBest =
-        final > best;
-
-    if(wasNewBest){
-
-        best = final;
-
-        localStorage.setItem(
-            "endlessShiftBest",
-            best
+        galaxyCtx.moveTo(
+            galaxyPlayer.x+
+            galaxyPlayer.width/2,
+            galaxyPlayer.y
         );
 
-        newBest.textContent =
-            "🏆 NEW BEST SCORE!";
+        galaxyCtx.lineTo(
+            galaxyPlayer.x,
+            galaxyPlayer.y+
+            galaxyPlayer.height
+        );
+
+        galaxyCtx.lineTo(
+            galaxyPlayer.x+
+            galaxyPlayer.width,
+            galaxyPlayer.y+
+            galaxyPlayer.height
+        );
+
+        galaxyCtx.closePath();
+
+        galaxyCtx.fill();
+
+
+        galaxyCtx.fillStyle="#fff";
+
+        galaxyCtx.fillRect(
+            galaxyPlayer.x+
+            galaxyPlayer.width/2-2,
+            galaxyPlayer.y+10,
+            4,
+            8
+        );
+
+
+        galaxyCtx.fillStyle="#ffe600";
+
+        galaxyBullets.forEach(
+            b=>{
+                galaxyCtx.fillRect(
+                    b.x,b.y,
+                    b.width,b.height
+                );
+            }
+        );
+
+
+        galaxyEnemies.forEach(
+            e=>{
+                galaxyCtx.fillStyle=
+                e.color;
+
+                galaxyCtx.fillRect(
+                    e.x,e.y,
+                    e.width,e.height
+                );
+            }
+        );
 
     }else{
 
-        newBest.textContent = "";
+        galaxyCtx.fillStyle="#ff0055";
+
+        galaxyCtx.font="28px Arial";
+
+        galaxyCtx.textAlign="center";
+
+        galaxyCtx.fillText(
+            "GAME OVER",
+            galaxyCanvas.width/2,
+            galaxyCanvas.height/2-20
+        );
+
+        galaxyCtx.fillStyle="#fff";
+
+        galaxyCtx.font="16px Arial";
+
+        galaxyCtx.fillText(
+            "Final Score: "+
+            galaxyScore,
+            galaxyCanvas.width/2,
+            galaxyCanvas.height/2+15
+        );
+
+        galaxyCtx.fillText(
+            "Tap ⚡ to Restart",
+            galaxyCanvas.width/2,
+            galaxyCanvas.height/2+45
+        );
 
     }
 
-    finalScore.textContent =
-        final;
-
-    bestText.textContent =
-        best;
-
-    homeBest.textContent =
-        best;
-
-    gameOver.style.display =
-        "flex";
-
 }
 
 
-/* ================= RESTART ================= */
+function galaxyLoop(){
 
-function restartGame(){
+    if(!galaxyRunning)
+        return;
 
-    resetGame();
+    updateGalaxy();
 
-    gameRunning = true;
-
-    paused = false;
-
-    lastTime = 0;
+    drawGalaxy();
 
     requestAnimationFrame(
-        gameLoop
+        galaxyLoop
     );
 
 }
 
 
-/* ================= CLEAR ================= */
+function galaxyEnd(){
 
-function clearObjects(){
+    galaxyOver=true;
 
-    objects.forEach(
-        obj=>{
-            if(obj.element)
-                obj.element.remove();
-        }
-    );
+    galaxyRunning=false;
 
-    objects = [];
+    const oldBest =
+    Number(
+        localStorage.getItem(
+            "galaxyBest"
+        )
+    )||0;
+
+    if(galaxyScore>oldBest){
+
+        localStorage.setItem(
+            "galaxyBest",
+            galaxyScore
+        );
+
+    }
 
 }
 
 
-/* ================= RESIZE ================= */
+function stopGalaxy(){
 
-window.addEventListener(
-    "resize",
-    function(){
+    galaxyRunning=false;
+    galaxyOver=true;
+    galaxyBullets=[];
+    galaxyEnemies=[];
+    galaxyPlayer.dx=0;
+
+}
+
+
+function exitGalaxy(){
+
+    stopGalaxy();
+
+    showHome();
+
+}
+
+
+/* =========================================================
+   TARGET RUSH
+========================================================= */
+
+const targetGame =
+document.getElementById(
+    "targetGame"
+);
+
+const targetArena =
+document.getElementById(
+    "targetArena"
+);
+
+let targetScore=0;
+let targetLevel=1;
+let targetLives=3;
+let targetTime=3;
+
+let targetTimer=null;
+let targetElement=null;
+let targetRunning=false;
+
+
+function openTarget(){
+
+    hideAll();
+
+    targetGame.classList.add("active");
+
+    startTarget();
+
+}
+
+
+function startTarget(){
+
+    clearInterval(targetTimer);
+
+    if(targetElement){
+        targetElement.remove();
+        targetElement=null;
+    }
+
+    targetScore=0;
+    targetLevel=1;
+    targetLives=3;
+    targetRunning=true;
+
+    document
+    .getElementById("targetOver")
+    .style.display="none";
+
+    updateTargetHUD();
+
+    createTarget();
+
+}
+
+
+function updateTargetHUD(){
+
+    document
+    .getElementById("targetScore")
+    .textContent=
+    targetScore;
+
+    document
+    .getElementById("targetLevel")
+    .textContent=
+    targetLevel;
+
+    document
+    .getElementById("targetLives")
+    .textContent=
+    targetLives;
+
+}
+
+
+function createTarget(){
+
+    if(!targetRunning)
+        return;
+
+    clearInterval(targetTimer);
+
+    if(targetElement){
+        targetElement.remove();
+        targetElement=null;
+    }
+
+
+    const size =
+    Math.max(
+        38,
+        76-targetLevel*2
+    );
+
+
+    const el =
+    document.createElement("div");
+
+    el.className="target";
+
+    el.style.width=size+"px";
+    el.style.height=size+"px";
+
+
+    const margin=size/2+10;
+
+    const x =
+    margin+
+    Math.random()*
+    Math.max(
+        1,
+        targetArena.clientWidth-
+        margin*2
+    );
+
+    const y =
+    margin+
+    Math.random()*
+    Math.max(
+        1,
+        targetArena.clientHeight-
+        margin*2
+    );
+
+
+    el.style.left=x+"px";
+    el.style.top=y+"px";
+
+
+    el.addEventListener(
+        "pointerdown",
+        hitTarget
+    );
+
+
+    targetArena.appendChild(el);
+
+    targetElement=el;
+
+
+    targetTime =
+    Math.max(
+        .65,
+        3-targetLevel*.09
+    );
+
+
+    document
+    .getElementById("targetTime")
+    .textContent=
+    targetTime.toFixed(1);
+
+
+    targetTimer =
+    setInterval(
+        ()=>{
+
+            targetTime-=.1;
+
+            document
+            .getElementById("targetTime")
+            .textContent=
+            Math.max(
+                0,
+                targetTime
+            ).toFixed(1);
+
+
+            if(targetTime<=0){
+
+                clearInterval(
+                    targetTimer
+                );
+
+                missedTarget();
+
+            }
+
+        },
+        100
+    );
+
+}
+
+
+function hitTarget(e){
+
+    e.stopPropagation();
+
+    if(!targetRunning)
+        return;
+
+    clearInterval(targetTimer);
+
+    targetScore +=
+    10*targetLevel;
+
+    beep(750);
+    vibrate();
+
+    if(
+        targetScore>0 &&
+        targetScore%50===0
+    ){
+
+        targetLevel++;
+
+        showTargetMessage(
+            "LEVEL UP! 🔥",
+            true
+        );
+
+    }else{
+
+        showTargetMessage(
+            "+"+(10*targetLevel),
+            true
+        );
+
+    }
+
+    updateTargetHUD();
+
+    if(targetElement){
+
+        targetElement.remove();
+        targetElement=null;
+
+    }
+
+    setTimeout(
+        createTarget,
+        120
+    );
+
+}
+
+
+function missedTarget(){
+
+    if(!targetRunning)
+        return;
+
+    targetLives--;
+
+    updateTargetHUD();
+
+    showTargetMessage(
+        "MISS! ❤️ -1",
+        false
+    );
+
+    vibrate();
+
+
+    if(targetLives<=0){
+
+        setTimeout(
+            endTarget,
+            300
+        );
+
+    }else{
+
+        createTarget();
+
+    }
+
+}
+
+
+targetArena.addEventListener(
+    "pointerdown",
+    e=>{
 
         if(
-            playerX >
-            window.innerWidth-25
-        ){
+            e.target.classList.contains(
+                "target"
+            )
+        ) return;
 
-            playerX =
-                window.innerWidth-25;
+        if(!targetRunning)
+            return;
+
+        targetLives--;
+
+        updateTargetHUD();
+
+        showTargetMessage(
+            "WRONG! ❤️ -1",
+            false
+        );
+
+        vibrate();
+
+
+        if(targetLives<=0){
+
+            setTimeout(
+                endTarget,
+                300
+            );
 
         }
-
-        player.style.left =
-            playerX + "px";
 
     }
 );
+
+
+function showTargetMessage(
+    text,
+    good
+){
+
+    const msg =
+    document.getElementById(
+        "targetMessage"
+    );
+
+    msg.textContent=text;
+
+    msg.className =
+    "target-message "+
+    (good?"good":"bad");
+
+
+    setTimeout(
+        ()=>{
+            msg.textContent="";
+        },
+        500
+    );
+
+}
+
+
+function endTarget(){
+
+    targetRunning=false;
+
+    clearInterval(targetTimer);
+
+    if(targetElement){
+        targetElement.remove();
+        targetElement=null;
+    }
+
+
+    const oldBest =
+    Number(
+        localStorage.getItem(
+            "targetRushBest"
+        )
+    )||0;
+
+
+    if(targetScore>oldBest){
+
+        localStorage.setItem(
+            "targetRushBest",
+            targetScore
+        );
+
+    }
+
+
+    document
+    .getElementById("targetFinal")
+    .textContent=
+    targetScore;
+
+    document
+    .getElementById("targetBest")
+    .textContent=
+    Math.max(
+        targetScore,
+        oldBest
+    );
+
+
+    document
+    .getElementById("targetOver")
+    .style.display="flex";
+
+}
+
+
+function stopTarget(){
+
+    targetRunning=false;
+
+    clearInterval(targetTimer);
+
+    if(targetElement){
+        targetElement.remove();
+        targetElement=null;
+    }
+
+    document
+    .getElementById("targetOver")
+    .style.display="none";
+
+}
+
+
+function exitTarget(){
+
+    stopTarget();
+
+    showHome();
+
+}
+
+
+/* =========================================================
+   INITIAL SETTINGS
+========================================================= */
+
+updateSettings();
+updateHomeScores();
 
 </script>
 
